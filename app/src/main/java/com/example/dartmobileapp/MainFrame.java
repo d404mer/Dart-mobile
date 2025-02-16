@@ -36,6 +36,20 @@ public class MainFrame extends AppCompatActivity {
                 startActivity(intent); // Start the new activity
             }
         });
+
+
+
+        // Найти кнопку регистрации
+        Button signUpButton = findViewById(R.id.signupButton);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Переход в SignUpActivity
+                Intent intent = new Intent(MainFrame.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
