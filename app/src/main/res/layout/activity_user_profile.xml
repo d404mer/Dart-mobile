@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/main"
+    android:background="#000000"
+    android:padding="16dp"> <!-- Оставляем padding -->
+
+    <!-- Кнопка Назад -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        android:src="@drawable/back"
+        android:contentDescription="Назад"/>
+
+    <!-- Заголовок -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ваш аккаунт"
+        android:textSize="22sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_black"
+        android:paddingBottom="24dp"/>
+
+    <!-- Имя пользователя -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Имя пользователя"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:paddingStart="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@user"
+        android:textSize="14sp"
+        android:textColor="#AAAAAA"
+        android:paddingStart="8dp"
+        android:paddingBottom="16dp"/>
+
+    <!-- Email -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Электронная почта"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:paddingStart="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="userEmail@mail.ru"
+        android:textSize="14sp"
+        android:textColor="#AAAAAA"
+        android:paddingStart="8dp"
+        android:paddingBottom="16dp"/>
+
+    <!-- Пароль -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Пароль"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:paddingStart="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="**********************"
+        android:textSize="14sp"
+        android:textColor="#AAAAAA"
+        android:paddingStart="8dp"
+        android:paddingBottom="24dp"/>
+
+    <!-- Кнопка выхода -->
+    <TextView
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выйти"
+        android:textSize="16sp"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        android:paddingStart="8dp"
+        android:paddingTop="16dp"/>
+</LinearLayout>

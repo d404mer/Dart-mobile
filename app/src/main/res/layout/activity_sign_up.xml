@@ -138,7 +138,7 @@
 
     <!-- Ссылка "Забыли пароль?" -->
     <TextView
-        android:id="@+id/forgotPasswordText"
+        android:id="@+id/accountExistsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Уже есть аккаунт?"

@@ -1,7 +1,9 @@
 package com.example.dartmobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,5 +28,19 @@ public class SignUpActivity extends AppCompatActivity {
         // Обрабатываем нажатие на кнопку "Назад"
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
+        findViewById(R.id.accountExistsText).setOnClickListener(v -> {
+            Intent intent = new Intent(this, LogInActivity.class);
+            startActivity(intent);
+        });
+
+        Button signUpButton = findViewById(R.id.signupButton);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Переход в SignUpActivity
+                Intent intent = new Intent(SignUpActivity.this,  Feed.class);
+                startActivity(intent);
+            }
+        });
     }
 }
