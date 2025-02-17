@@ -27,12 +27,14 @@ public class RestorePassword extends AppCompatActivity {
         // Кнопка Назад
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
+        String from = getIntent().getStringExtra("COMING_FROM");
         // Обработка кнопки Далее
         Button signUpButton = findViewById(R.id.nextButton_btn);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RestorePassword.this, PasswordRecoverySuccess.class);
+                intent.putExtra("COMING_FROM", from);
                 startActivity(intent);
             }
         });

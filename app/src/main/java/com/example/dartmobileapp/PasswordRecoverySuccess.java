@@ -24,14 +24,24 @@ public class PasswordRecoverySuccess extends AppCompatActivity {
             return insets;
         });
 
-        // Обработка кнопки Обратно в меню
+        String from = getIntent().getStringExtra("COMING_FROM");
+
+// Обработка кнопки "Далее"
         Button signUpButton = findViewById(R.id.nextButton_btn);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PasswordRecoverySuccess.this, MainFrame.class);
-                startActivity(intent);
+                if ("LogInView".equals(from)) {
+                    // Если пользователь пришёл с экрана LogInView, переходим на MainFrame
+                    Intent intent = new Intent(PasswordRecoverySuccess.this, MainFrame.class);
+                    startActivity(intent);
+                } else if ("ChangePasswordView".equals(from)) {
+                    // Если пользователь пришёл с экрана ChangePasswordView, переходим на UserProfile
+                    Intent intent = new Intent(PasswordRecoverySuccess.this, user_profile.class);
+                    startActivity(intent);
+                }
             }
         });
+
     }
 }

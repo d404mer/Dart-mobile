@@ -40,6 +40,9 @@ public class LogInActivity extends AppCompatActivity {
 
         findViewById(R.id.forgotPasswordText).setOnClickListener(v -> {
             Intent intent = new Intent(this, RestorePassword.class);
+
+            intent.putExtra("COMING_FROM", "LogInView");
+
             startActivity(intent);
         });
 

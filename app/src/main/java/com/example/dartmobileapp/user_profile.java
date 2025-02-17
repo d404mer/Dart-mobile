@@ -9,6 +9,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Stack;
+
 public class user_profile extends AppCompatActivity {
 
     @Override
@@ -29,7 +31,10 @@ public class user_profile extends AppCompatActivity {
         });
 
         // Кнопка Назад
-        findViewById(R.id.backButton).setOnClickListener(v -> finish());
+        findViewById(R.id.backButton).setOnClickListener(v -> {
+            Intent intent = new Intent(this, Feed.class);
+            startActivity(intent);
+        });
 
         // Переход к смене почты
         findViewById(R.id.emailtext).setOnClickListener(v -> {
@@ -38,10 +43,17 @@ public class user_profile extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Переход к смене почты
+        // Переход к имени пользователя
         findViewById(R.id.usernameText).setOnClickListener(v -> {
             Intent intent = new Intent(this, VerifyPassword.class);
             intent.putExtra("COMING_FROM", "ChangeUsername");
+            startActivity(intent);
+        });
+
+
+
+        findViewById(R.id.paswordtext).setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChangePassword.class);
             startActivity(intent);
         });
     }
