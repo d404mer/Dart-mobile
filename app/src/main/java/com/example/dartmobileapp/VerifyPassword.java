@@ -1,5 +1,6 @@
 package com.example.dartmobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -20,5 +21,26 @@ public class VerifyPassword extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        String from = getIntent().getStringExtra("COMING_FROM");
+
+        findViewById(R.id.nextButton).setOnClickListener(v -> {
+            if ("ChangeEmail".equals(from))
+            {
+                startActivity(new Intent(VerifyPassword.this, ChangeEmail.class));
+            } else if ("ChangeUsername".equals(from))
+            {
+                startActivity(new Intent(VerifyPassword.this, ChangeUsername.class));
+            }
+        });
+
+
+
+        // Кнопка Назад
+        findViewById(R.id.backButton).setOnClickListener(v -> {
+            Intent intent = new Intent(this, user_profile.class);
+            startActivity(intent);
+        });
+
     }
 }

@@ -33,7 +33,15 @@ public class user_profile extends AppCompatActivity {
 
         // Переход к смене почты
         findViewById(R.id.emailtext).setOnClickListener(v -> {
-            Intent intent = new Intent(this, ChangeEmail.class);
+            Intent intent = new Intent(this, VerifyPassword.class);
+            intent.putExtra("COMING_FROM", "ChangeEmail");
+            startActivity(intent);
+        });
+
+        // Переход к смене почты
+        findViewById(R.id.usernameText).setOnClickListener(v -> {
+            Intent intent = new Intent(this, VerifyPassword.class);
+            intent.putExtra("COMING_FROM", "ChangeUsername");
             startActivity(intent);
         });
     }

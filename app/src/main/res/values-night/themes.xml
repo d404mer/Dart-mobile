@@ -14,8 +14,10 @@
 
         <!-- Default text color (white) -->
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+
 
         <!-- Default text hint color (red) -->
-        <item name="android:textColorHint">@android:color/holo_red_light</item>
+        <item name="android:textColorHint">@android:color/white</item>
     </style>
 </resources>
