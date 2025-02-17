@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -59,13 +60,15 @@
         android:paddingStart="8dp"/>
 
     <TextView
+        android:id="@+id/emailtext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="userEmail@mail.ru"
         android:textSize="14sp"
         android:textColor="#AAAAAA"
         android:paddingStart="8dp"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="16dp"
+        tools:ignore="InvalidId" />
 
     <!-- Пароль -->
     <TextView

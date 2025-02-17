@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#000000"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="текст"
+        android:textSize="22sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextButton_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:text="Перейти на главную"
+        android:textColor="#000000"
+        android:fontFamily="@font/poppins_bold"
+        app:cornerRadius="25dp"
+        app:backgroundTint="#FF0000"/>
+</LinearLayout>

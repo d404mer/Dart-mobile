@@ -4,6 +4,9 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="android:fontFamily">@font/poppins_regular </item>
+        <item name="android:includeFontPadding">false</item>
+
         <!-- Secondary brand color. -->
 
         <item name="colorOnSecondary">@color/black</item>
