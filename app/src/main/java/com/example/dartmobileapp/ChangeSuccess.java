@@ -33,11 +33,10 @@ public class ChangeSuccess extends AppCompatActivity {
             titleText.setText(title);
         }
 
-
         Button signUpButton = findViewById(R.id.nextButton_btn);
         signUpButton.setOnClickListener(v -> {
-            // Переход в SignUpActivity
-            Intent intent = new Intent(ChangeSuccess.this,  Feed.class);
+            // Переход в Feed
+            Intent intent = new Intent(ChangeSuccess.this, Feed.class);
             startActivity(intent);
         });
     }
