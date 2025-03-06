@@ -18,7 +18,7 @@
             android:name=".profile.ChangePassword"
             android:exported="false" />
         <activity
-            android:name=".profile.ChangeUsername"
+            android:name=".profile.edit.ChangeUsername"
             android:exported="false" />
         <activity
             android:name=".profile.ChangeEmail"
@@ -27,7 +27,7 @@
             android:name=".auth.VerifyPassword"
             android:exported="false" />
         <activity
-            android:name=".profile.ChangeSuccess"
+            android:name=".profile.edit.ChangeSuccess"
             android:exported="false" />
         <activity
             android:name=".profile.UserProfile"

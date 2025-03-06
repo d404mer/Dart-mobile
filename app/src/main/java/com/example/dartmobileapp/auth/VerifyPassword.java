@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dartmobileapp.R;
 import com.example.dartmobileapp.profile.ChangeEmail;
-import com.example.dartmobileapp.profile.ChangeUsername;
+import com.example.dartmobileapp.profile.edit.ChangeUsername;
 import com.example.dartmobileapp.profile.UserProfile;
 
 public class VerifyPassword extends AppCompatActivity {

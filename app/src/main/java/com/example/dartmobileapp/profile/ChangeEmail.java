@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.profile.edit.ChangeSuccess;
 
 public class ChangeEmail extends AppCompatActivity {
 
