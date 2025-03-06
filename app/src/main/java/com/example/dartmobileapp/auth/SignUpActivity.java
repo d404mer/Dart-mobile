@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.auth;
 
 
 import android.app.ProgressDialog;
@@ -26,6 +26,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.feed.Feed;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
@@ -34,10 +36,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.dartmobileapp.ui.main.MainFrame;
+
 public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, emailEditText, passwordEditText, passwordConfirmEditText;
     private Button signUpButton;
-    private static final String API_URL = "https://compassionate-bravery-production.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

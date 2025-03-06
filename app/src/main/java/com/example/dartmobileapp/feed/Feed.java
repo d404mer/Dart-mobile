@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.feed;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +18,9 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dartmobileapp.VideoAdapter;
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.model.Video;
+import com.example.dartmobileapp.profile.UserProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +36,7 @@ public class Feed extends AppCompatActivity {
     private VideoAdapter adapter;
     private List<Video> videoList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
-    private static final String API_URL = "https://compassionate-bravery-production.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class Feed extends AppCompatActivity {
         });
 
         findViewById(R.id.profile_icon).setOnClickListener(v -> {
-            Intent intent = new Intent(this, user_profile.class);
+            Intent intent = new Intent(this, UserProfile.class);
             startActivity(intent);
         });
 

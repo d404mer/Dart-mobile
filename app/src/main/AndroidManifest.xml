@@ -15,43 +15,43 @@
         android:theme="@style/Theme.DartMobileApp"
         tools:targetApi="31">
         <activity
-            android:name=".ChangePassword"
+            android:name=".profile.ChangePassword"
             android:exported="false" />
         <activity
-            android:name=".ChangeUsername"
+            android:name=".profile.ChangeUsername"
             android:exported="false" />
         <activity
-            android:name=".ChangeEmail"
+            android:name=".profile.ChangeEmail"
             android:exported="false" />
         <activity
-            android:name=".VerifyPassword"
+            android:name=".auth.VerifyPassword"
             android:exported="false" />
         <activity
-            android:name=".ChangeSuccess"
+            android:name=".profile.ChangeSuccess"
             android:exported="false" />
         <activity
-            android:name=".user_profile"
+            android:name=".profile.UserProfile"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Feed"
+            android:name=".feed.Feed"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".PasswordRecoverySuccess"
+            android:name=".auth.PasswordRecoverySuccess"
             android:exported="false" />
         <activity
-            android:name=".RestorePassword"
+            android:name=".auth.RestorePassword"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".auth.SignUpActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".LogInActivity"
+            android:name=".auth.LogInActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".MainFrame"
+            android:name=".ui.main.MainFrame"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

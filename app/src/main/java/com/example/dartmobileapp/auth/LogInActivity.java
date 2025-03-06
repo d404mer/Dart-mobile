@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.auth;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.feed.Feed;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -31,11 +33,12 @@ import java.util.Map;
 
 import android.util.Log;
 import com.android.volley.DefaultRetryPolicy;
+import com.example.dartmobileapp.ui.main.MainFrame;
 
 public class LogInActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, passwordEditText;
     private MaterialButton loginButton;
-    private static final String API_URL = "https://compassionate-bravery-production.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

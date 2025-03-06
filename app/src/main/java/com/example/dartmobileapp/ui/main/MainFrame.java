@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.auth.LogInActivity;
+import com.example.dartmobileapp.auth.SignUpActivity;
+import com.example.dartmobileapp.feed.Feed;
+import com.example.dartmobileapp.profile.UserProfile;
 
 public class MainFrame extends AppCompatActivity {
 

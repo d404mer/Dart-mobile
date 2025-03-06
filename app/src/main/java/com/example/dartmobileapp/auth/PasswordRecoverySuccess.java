@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.profile.UserProfile;
+import com.example.dartmobileapp.ui.main.MainFrame;
 
 public class PasswordRecoverySuccess extends AppCompatActivity {
 
@@ -37,7 +41,7 @@ public class PasswordRecoverySuccess extends AppCompatActivity {
                     startActivity(intent);
                 } else if ("ChangePasswordView".equals(from)) {
                     // Если пользователь пришёл с экрана ChangePasswordView, переходим на UserProfile
-                    Intent intent = new Intent(PasswordRecoverySuccess.this, user_profile.class);
+                    Intent intent = new Intent(PasswordRecoverySuccess.this, UserProfile.class);
                     startActivity(intent);
                 }
             }

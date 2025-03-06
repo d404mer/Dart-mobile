@@ -1,8 +1,7 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -11,33 +10,39 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class RestorePassword extends AppCompatActivity {
+import com.example.dartmobileapp.R;
+
+public class ChangeEmail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_restore_password);
+        setContentView(R.layout.activity_change_email);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Кнопка Назад
+        // Обрабатываем нажатие на кнопку "Назад"
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
-        String from = getIntent().getStringExtra("COMING_FROM");
-        // Обработка кнопки Далее
-        Button signUpButton = findViewById(R.id.nextButton_btn);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RestorePassword.this, PasswordRecoverySuccess.class);
-                intent.putExtra("COMING_FROM", from);
-                startActivity(intent);
-            }
+
+
+
+
+
+        // Получаем кнопку обновления
+        Button updateButton = findViewById(R.id.updateButton);
+
+        // Устанавливаем обработчик нажатия
+        updateButton.setOnClickListener(v -> {
+            // Пример текста, который передаем
+            String title = "Почта успешно изменена";
+            Intent intent = new Intent(ChangeEmail.this, ChangeSuccess.class);
+            intent.putExtra("TITLE", title);
+            startActivity(intent);
         });
     }
-
 }

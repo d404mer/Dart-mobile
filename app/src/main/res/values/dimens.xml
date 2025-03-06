@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margins and Paddings -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_title">16sp</dimen>
+    <dimen name="text_headline">20sp</dimen>
+    <dimen name="text_display">24sp</dimen>
+
+    <!-- Component Sizes -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
+
+    <!-- Corner Radius -->
+    <dimen name="corner_small">4dp</dimen>
+    <dimen name="corner_medium">8dp</dimen>
+    <dimen name="corner_large">16dp</dimen>
+</resources> 

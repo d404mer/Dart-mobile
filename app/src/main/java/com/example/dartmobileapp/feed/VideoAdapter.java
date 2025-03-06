@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.feed;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.dartmobileapp.R;
-import com.example.dartmobileapp.Video;
+import com.example.dartmobileapp.model.Video;
 import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {

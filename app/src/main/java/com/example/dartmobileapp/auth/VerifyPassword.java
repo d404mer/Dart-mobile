@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.profile.ChangeEmail;
+import com.example.dartmobileapp.profile.ChangeUsername;
+import com.example.dartmobileapp.profile.UserProfile;
 
 public class VerifyPassword extends AppCompatActivity {
 
@@ -38,7 +43,7 @@ public class VerifyPassword extends AppCompatActivity {
 
         // Кнопка Назад
         findViewById(R.id.backButton).setOnClickListener(v -> {
-            Intent intent = new Intent(this, user_profile.class);
+            Intent intent = new Intent(this, UserProfile.class);
             startActivity(intent);
         });
 

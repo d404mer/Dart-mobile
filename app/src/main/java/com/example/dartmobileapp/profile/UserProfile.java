@@ -1,4 +1,4 @@
-package com.example.dartmobileapp;
+package com.example.dartmobileapp.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Stack;
+import com.example.dartmobileapp.R;
+import com.example.dartmobileapp.auth.VerifyPassword;
+import com.example.dartmobileapp.feed.Feed;
+import com.example.dartmobileapp.ui.main.MainFrame;
 
-public class user_profile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
