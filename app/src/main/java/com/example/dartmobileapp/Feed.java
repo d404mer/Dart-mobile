@@ -34,6 +34,7 @@ public class Feed extends AppCompatActivity {
     private VideoAdapter adapter;
     private List<Video> videoList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
+    private static final String API_URL = "https://compassionate-bravery-production.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +68,7 @@ public class Feed extends AppCompatActivity {
     }
 
     private void loadVideos() {
-        String url = "https://dart-media-server.up.railway.app/api/video";
-        
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, API_URL + "/video", null,
             response -> {
                 try {
                     List<Video> videos = new ArrayList<>();
@@ -109,9 +108,7 @@ public class Feed extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-                String token = prefs.getString("userToken", "");
-                headers.put("Authorization", "Bearer " + token);
+                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };

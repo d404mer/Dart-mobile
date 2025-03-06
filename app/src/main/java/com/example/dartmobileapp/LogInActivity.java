@@ -35,7 +35,7 @@ import com.android.volley.DefaultRetryPolicy;
 public class LogInActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, passwordEditText;
     private MaterialButton loginButton;
-    private static final String API_URL = "https://dart-media-server.up.railway.app/api";
+    private static final String API_URL = "https://compassionate-bravery-production.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
