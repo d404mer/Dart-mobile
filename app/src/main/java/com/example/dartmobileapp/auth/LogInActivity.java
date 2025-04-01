@@ -34,6 +34,7 @@ import java.util.Map;
 import android.util.Log;
 import com.android.volley.DefaultRetryPolicy;
 import com.example.dartmobileapp.ui.main.MainFrame;
+import com.example.dartmobileapp.utils.SessionManager;
 
 public class LogInActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, passwordEditText;
@@ -111,11 +112,15 @@ public class LogInActivity extends AppCompatActivity {
                 API_URL + "/user/login",
                 jsonBody,
                 response -> {
-                    // Для отладки
-                    Log.d("LoginDebug", "Success response: " + response.toString());
                     try {
                         String token = response.getString("token");
-                        saveToken(token);
+                        String userId = response.getString("userId");
+                        String username = response.getString("username");
+                        String email = response.getString("email");
+                        
+                        SessionManager sessionManager = new SessionManager(LogInActivity.this);
+                        sessionManager.createSession(token, userId, username, email);
+                        
                         navigateToFeed();
                     } catch (JSONException e) {
                         showToast("Ошибка при обработке ответа сервера");

@@ -14,6 +14,7 @@ import com.example.dartmobileapp.auth.VerifyPassword;
 import com.example.dartmobileapp.feed.Feed;
 import com.example.dartmobileapp.profile.edit.ChangePassword;
 import com.example.dartmobileapp.ui.main.MainFrame;
+import com.example.dartmobileapp.utils.SessionManager;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -30,7 +31,10 @@ public class UserProfile extends AppCompatActivity {
 
         // Кнопка выхода
         findViewById(R.id.logout_button).setOnClickListener(v -> {
+            SessionManager sessionManager = new SessionManager(this);
+            sessionManager.logout();
             Intent intent = new Intent(this, MainFrame.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
 
