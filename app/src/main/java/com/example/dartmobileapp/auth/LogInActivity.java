@@ -115,20 +115,13 @@ public class LogInActivity extends AppCompatActivity {
                     try {
                         // Log the entire response for debugging
                         Log.d("LoginDebug", "Response: " + response.toString());
+                        System.out.println("LOGIN DEBUG - Login Response: " + response.toString());
                         
                         // Extract token from response
                         String token = response.getString("token");
                         
-                        // For userId, use a placeholder or extract from JWT token
-                        // For username and email, use what the user entered
-                        String userId = "user_" + System.currentTimeMillis(); // Temporary ID
-                        String name = username.split("@")[0]; // Use part of email as username
-                        String email = username; // Use the input email
-                        
-                        SessionManager sessionManager = new SessionManager(LogInActivity.this);
-                        sessionManager.createSession(token, userId, name, email);
-                        
-                        navigateToFeed();
+                        // Now that we have the token, let's fetch user data
+                        fetchUserProfile(token, username);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("LoginDebug", "JSON Error: " + e.getMessage());
@@ -175,6 +168,93 @@ public class LogInActivity extends AppCompatActivity {
         ));
 
         Volley.newRequestQueue(this).add(request);
+    }
+    
+    private void fetchUserProfile(String token, String fallbackEmail) {
+        // Запрос на получение данных пользователя
+        JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET,
+                API_URL + "/user/profile",
+                null,
+                profileResponse -> {
+                    try {
+                        // Log the entire profile response for debugging
+                        Log.d("LoginDebug", "Profile Response: " + profileResponse.toString());
+                        System.out.println("LOGIN DEBUG - Profile Response: " + profileResponse.toString());
+                        
+                        String userId = "user_" + System.currentTimeMillis(); // Placeholder ID
+                        
+                        // Extract user info
+                        String name;
+                        String email = fallbackEmail;
+                        
+                        // Try to get the name directly from the response
+                        if (profileResponse.has("name")) {
+                            name = profileResponse.getString("name");
+                            Log.d("LoginDebug", "Name found in profile: " + name);
+                            System.out.println("LOGIN DEBUG - Name found in profile: " + name);
+                        } else if (profileResponse.has("user") && profileResponse.getJSONObject("user").has("name")) {
+                            name = profileResponse.getJSONObject("user").getString("name");
+                            Log.d("LoginDebug", "Name found in user object: " + name);
+                            System.out.println("LOGIN DEBUG - Name found in user object: " + name);
+                        } else {
+                            // Default fallback - use the part before @ in email
+                            name = fallbackEmail.split("@")[0];
+                            Log.d("LoginDebug", "No name found in profile, using fallback: " + name);
+                            System.out.println("LOGIN DEBUG - No name found in profile, using fallback: " + name);
+                        }
+                        
+                        // Try to get the email
+                        if (profileResponse.has("email")) {
+                            email = profileResponse.getString("email");
+                        } else if (profileResponse.has("user") && profileResponse.getJSONObject("user").has("email")) {
+                            email = profileResponse.getJSONObject("user").getString("email");
+                        }
+                        
+                        Log.d("LoginDebug", "Final values - Name: " + name + ", Email: " + email);
+                        System.out.println("LOGIN DEBUG - Final values - Name: " + name + ", Email: " + email);
+                        
+                        // Create session
+                        SessionManager sessionManager = new SessionManager(LogInActivity.this);
+                        sessionManager.createSession(token, userId, name, email);
+                        
+                        navigateToFeed();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("LoginDebug", "Error parsing profile: " + e.getMessage());
+                        createSessionWithFallback(token, fallbackEmail);
+                    }
+                },
+                error -> {
+                    Log.e("LoginDebug", "Error fetching profile: " + error.toString());
+                    // If we can't get the profile, create session with fallback values
+                    createSessionWithFallback(token, fallbackEmail);
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
+        
+        profileRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
+        
+        Volley.newRequestQueue(this).add(profileRequest);
+    }
+    
+    private void createSessionWithFallback(String token, String email) {
+        String userId = "user_" + System.currentTimeMillis();
+        String name = email.split("@")[0]; // Fallback to part of email
+        
+        SessionManager sessionManager = new SessionManager(LogInActivity.this);
+        sessionManager.createSession(token, userId, name, email);
+        
+        navigateToFeed();
     }
 
     private void saveToken(String token) {

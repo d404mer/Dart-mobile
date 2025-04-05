@@ -2,6 +2,8 @@ package com.example.dartmobileapp.profile.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +16,12 @@ import com.example.dartmobileapp.auth.VerifyPassword;
 import com.example.dartmobileapp.feed.Feed;
 import com.example.dartmobileapp.profile.edit.ChangePassword;
 import com.example.dartmobileapp.ui.main.MainFrame;
+import com.example.dartmobileapp.utils.SessionManager;
 
 public class UserProfile extends AppCompatActivity {
+
+    private TextView usernameText, emailText, passwordText;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +34,30 @@ public class UserProfile extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize SessionManager
+        sessionManager = new SessionManager(this);
+
+        // Debug - dump all SharedPreferences values
+        dumpSharedPreferences();
+
+        // Initialize TextViews
+        usernameText = findViewById(R.id.usernameText);
+        emailText = findViewById(R.id.emailtext);
+        passwordText = findViewById(R.id.paswordtext);
+
+        // Display user data
+        displayUserData();
+
         // Кнопка выхода
         findViewById(R.id.logout_button).setOnClickListener(v -> {
+            // Clear session data
+            sessionManager.logout();
+            
+            // Navigate to MainFrame
             Intent intent = new Intent(this, MainFrame.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            finish();
         });
 
         // Кнопка Назад
@@ -54,11 +80,65 @@ public class UserProfile extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-
         findViewById(R.id.paswordtext).setOnClickListener(v -> {
             Intent intent = new Intent(this, ChangePassword.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh user data when returning to this activity
+        displayUserData();
+    }
+
+    private void displayUserData() {
+        // Check if user is logged in
+        if (sessionManager.isLoggedIn()) {
+            // Get user data from SessionManager
+            String name = sessionManager.getUsername(); // This is actually the name field
+            String email = sessionManager.getEmail();
+            
+            // For debug - force a specific name to test if the UI works properly
+            String debugName = "TestUserName";
+            System.out.println("PROFILE DEBUG - USING HARDCODED NAME FOR TESTING: " + debugName);
+            
+            // Add debug logging using System.out which isn't filtered
+            System.out.println("==========================================");
+            System.out.println("PROFILE DEBUG - Name from SessionManager: " + name);
+            System.out.println("PROFILE DEBUG - Email from SessionManager: " + email);
+            System.out.println("==========================================");
+            
+            // The original Android logging
+            android.util.Log.d("UserProfileDebug", "Name from SessionManager: " + name);
+            android.util.Log.d("UserProfileDebug", "Email from SessionManager: " + email);
+            
+            // Display username and email
+            usernameText.setText("@" + debugName); // Using debug name for testing
+            emailText.setText(email);
+            passwordText.setText("••••••••"); // Display placeholder for password
+        } else {
+            // If not logged in, redirect to login
+            Toast.makeText(this, "Необходимо авторизоваться", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainFrame.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void dumpSharedPreferences() {
+        try {
+            android.content.SharedPreferences prefs = getSharedPreferences("AppSession", MODE_PRIVATE);
+            android.util.Log.d("UserProfileDebug", "===== DUMPING SHARED PREFERENCES =====");
+            android.util.Log.d("UserProfileDebug", "username: " + prefs.getString("username", "NOT FOUND"));
+            android.util.Log.d("UserProfileDebug", "email: " + prefs.getString("email", "NOT FOUND"));
+            android.util.Log.d("UserProfileDebug", "userId: " + prefs.getString("userId", "NOT FOUND"));
+            android.util.Log.d("UserProfileDebug", "isLoggedIn: " + prefs.getBoolean("isLoggedIn", false));
+            android.util.Log.d("UserProfileDebug", "token: " + (prefs.getString("userToken", "NOT FOUND") != null ? "EXISTS" : "NULL"));
+            android.util.Log.d("UserProfileDebug", "===== END DUMP =====");
+        } catch (Exception e) {
+            android.util.Log.e("UserProfileDebug", "Error dumping SharedPreferences: " + e.getMessage());
+        }
     }
 }
