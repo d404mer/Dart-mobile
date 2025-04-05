@@ -1,5 +1,6 @@
 package com.example.dartmobileapp.feed;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.dartmobileapp.R;
 import com.example.dartmobileapp.model.Video;
+import com.example.dartmobileapp.activityVideoDetail;
 
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         Video video = videos.get(position);
         holder.titleView.setText(video.getTitle());
         holder.descriptionView.setText(video.getDescription());
+        
+        // Add click listener to open video detail activity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), activityVideoDetail.class);
+            intent.putExtra("VIDEO_ID", video.getId());
+            holder.itemView.getContext().startActivity(intent);
+        });
         
         // Настраиваем WebView для отображения iframe
         holder.webView.getSettings().setJavaScriptEnabled(true);
