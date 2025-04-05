@@ -1,7 +1,6 @@
 package com.example.dartmobileapp.feed;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ import com.example.dartmobileapp.profile.UserProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;

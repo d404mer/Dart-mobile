@@ -1,6 +1,8 @@
 package com.example.dartmobileapp.model;
 
-public class Video {
+import java.io.Serializable;
+
+public class Video implements Serializable {
     private int id;
     private String title;
     private String description;
