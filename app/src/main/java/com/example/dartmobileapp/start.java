@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.dartmobileapp.feed.ui.Feed;
+import com.example.dartmobileapp.feed.Feed;
 import com.example.dartmobileapp.ui.main.MainFrame;
 import com.example.dartmobileapp.utils.SessionManager;
 
