@@ -100,10 +100,6 @@ public class UserProfile extends AppCompatActivity {
             String name = sessionManager.getUsername(); // This is actually the name field
             String email = sessionManager.getEmail();
             
-            // For debug - force a specific name to test if the UI works properly
-            String debugName = "TestUserName";
-            System.out.println("PROFILE DEBUG - USING HARDCODED NAME FOR TESTING: " + debugName);
-            
             // Add debug logging using System.out which isn't filtered
             System.out.println("==========================================");
             System.out.println("PROFILE DEBUG - Name from SessionManager: " + name);
@@ -115,7 +111,7 @@ public class UserProfile extends AppCompatActivity {
             android.util.Log.d("UserProfileDebug", "Email from SessionManager: " + email);
             
             // Display username and email
-            usernameText.setText("@" + debugName); // Using debug name for testing
+            usernameText.setText("@" + name); // Using actual name from SessionManager
             emailText.setText(email);
             passwordText.setText("••••••••"); // Display placeholder for password
         } else {

@@ -60,8 +60,20 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void updatePassword(String password) {
+        // Для демо-режима пароль просто сохраняется локально
+        // В реальном приложении здесь должно быть безопасное хранение
+        editor.putString("password", password);
+        editor.apply();
+    }
+
     public void logout() {
         editor.clear();
         editor.apply();
+    }
+
+    // Метод для доступа к SharedPreferences напрямую
+    public SharedPreferences getSharedPreferences() {
+        return prefs;
     }
 } 

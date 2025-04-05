@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dartmobileapp.R;
-import com.example.dartmobileapp.profile.UserProfile;
+import com.example.dartmobileapp.feed.Feed;
 
 public class ChangeSuccess extends AppCompatActivity {
 
@@ -36,13 +36,11 @@ public class ChangeSuccess extends AppCompatActivity {
             titleText.setText(title);
         }
 
-        Button nextButton = findViewById(R.id.nextButton_btn);
-        nextButton.setOnClickListener(v -> {
-            // Переход в профиль пользователя
-            Intent intent = new Intent(ChangeSuccess.this, UserProfile.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Очищаем стек активити
+        Button signUpButton = findViewById(R.id.nextButton_btn);
+        signUpButton.setOnClickListener(v -> {
+            // Переход в Feed
+            Intent intent = new Intent(ChangeSuccess.this, Feed.class);
             startActivity(intent);
-            finish();
         });
     }
 }

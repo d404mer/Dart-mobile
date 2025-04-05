@@ -1,10 +1,7 @@
 package com.example.dartmobileapp.profile;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,9 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChangeEmail extends AppCompatActivity {
-
     private TextInputEditText emailInput;
-    private Button updateButton;
     private SessionManager sessionManager;
     private static final String API_URL = "https://dart-server-back.up.railway.app/api";
 
@@ -47,117 +42,116 @@ public class ChangeEmail extends AppCompatActivity {
             return insets;
         });
 
-        // Инициализация компонентов
-        emailInput = findViewById(R.id.emailChangeInput);
-        updateButton = findViewById(R.id.updateButton);
+        // Инициализируем SessionManager
         sessionManager = new SessionManager(this);
-        
-        // Установим текущую почту пользователя в поле ввода
-        String currentEmail = sessionManager.getEmail();
-        if (currentEmail != null && !currentEmail.isEmpty()) {
-            emailInput.setText(currentEmail);
-            emailInput.setSelection(currentEmail.length()); // Установить курсор в конец текста
-        }
 
-        // Обработчик нажатия кнопки "Назад"
+        // Инициализируем поле ввода
+        emailInput = findViewById(R.id.emailChangeInput);
+        
+        // Устанавливаем текущий email в поле ввода
+        emailInput.setText(sessionManager.getEmail());
+
+        // Обрабатываем нажатие на кнопку "Назад"
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
-        // Установим обработчик нажатия на кнопку обновления
+        // Получаем кнопку обновления
+        Button updateButton = findViewById(R.id.updateButton);
+
+        // Устанавливаем обработчик нажатия
         updateButton.setOnClickListener(v -> {
             String newEmail = emailInput.getText().toString().trim();
             
-            // Проверка введенной почты
-            if (TextUtils.isEmpty(newEmail)) {
-                Toast.makeText(this, "Введите новую почту", Toast.LENGTH_SHORT).show();
+            // Проверка на пустой email
+            if (newEmail.isEmpty()) {
+                Toast.makeText(this, "Пожалуйста, введите email", Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            // Проверка формата почты
-            if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
-                Toast.makeText(this, "Введите корректный адрес электронной почты", Toast.LENGTH_SHORT).show();
+            // Проверка валидности email
+            if (!isValidEmail(newEmail)) {
+                Toast.makeText(this, "Пожалуйста, введите корректный email", Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            // Проверка, что новая почта отличается от текущей
-            if (newEmail.equals(currentEmail)) {
-                Toast.makeText(this, "Новая почта совпадает с текущей", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            // Если использовать API, тогда вызвать метод updateEmailViaApi
+            // updateEmailViaApi(newEmail);
             
-            // Отправка запроса на изменение почты
-            updateEmail(newEmail);
+            // Для прототипа просто обновляем email в SessionManager
+            updateEmailLocally(newEmail);
         });
     }
     
-    private void updateEmail(String newEmail) {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Обновление почты...");
-        progressDialog.show();
+    private boolean isValidEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    
+    private void updateEmailLocally(String newEmail) {
+        // Обновляем email пользователя в SessionManager
+        sessionManager.updateEmail(newEmail);
         
-        // Получаем токен из SessionManager
+        // Переходим на экран успешного обновления
+        String title = "Почта успешно изменена";
+        Intent intent = new Intent(ChangeEmail.this, ChangeSuccess.class);
+        intent.putExtra("TITLE", title);
+        startActivity(intent);
+    }
+    
+    /**
+     * Метод для обновления email через API (закомментирован, так как API может не поддерживать эту функцию)
+     */
+    /*
+    private void updateEmailViaApi(String newEmail) {
+        // Показываем индикатор загрузки
+        // (код для показа прогресс-бара)
+        
         String token = sessionManager.getToken();
-        if (token == null || token.isEmpty()) {
-            progressDialog.dismiss();
-            Toast.makeText(this, "Ошибка авторизации", Toast.LENGTH_SHORT).show();
+        if (token == null) {
+            Toast.makeText(this, "Необходимо авторизоваться", Toast.LENGTH_SHORT).show();
             return;
         }
         
-        // Создаем JSON для запроса
-        JSONObject requestBody = new JSONObject();
+        JSONObject jsonBody = new JSONObject();
         try {
-            requestBody.put("email", newEmail);
+            jsonBody.put("email", newEmail);
         } catch (JSONException e) {
-            progressDialog.dismiss();
+            e.printStackTrace();
             Toast.makeText(this, "Ошибка при формировании запроса", Toast.LENGTH_SHORT).show();
             return;
         }
         
-        // Создаем запрос к API
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.PUT,
-                API_URL + "/user/email",
-                requestBody,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT,
+                API_URL + "/user/profile", // Предполагаемый эндпоинт
+                jsonBody,
                 response -> {
-                    progressDialog.dismiss();
+                    // Обработка успешного ответа
                     try {
-                        boolean success = response.getBoolean("success");
-                        if (success) {
-                            // Обновляем email в SessionManager
-                            sessionManager.updateEmail(newEmail);
+                        if (response.has("email")) {
+                            String updatedEmail = response.getString("email");
+                            sessionManager.updateEmail(updatedEmail);
                             
-                            // Показываем сообщение об успехе
+                            // Переходим на экран успешного обновления
                             String title = "Почта успешно изменена";
                             Intent intent = new Intent(ChangeEmail.this, ChangeSuccess.class);
                             intent.putExtra("TITLE", title);
                             startActivity(intent);
-                            finish();
                         } else {
-                            String message = response.has("message") ? response.getString("message") : "Ошибка при обновлении почты";
-                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                            // Обновляем email локально
+                            sessionManager.updateEmail(newEmail);
+                            
+                            // Переходим на экран успешного обновления
+                            String title = "Почта успешно изменена";
+                            Intent intent = new Intent(ChangeEmail.this, ChangeSuccess.class);
+                            intent.putExtra("TITLE", title);
+                            startActivity(intent);
                         }
                     } catch (JSONException e) {
+                        e.printStackTrace();
                         Toast.makeText(this, "Ошибка при обработке ответа", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
-                    progressDialog.dismiss();
-                    
-                    // Для упрощения тестирования, пока пропускаем проверку
-                    // и считаем, что смена почты прошла успешно
-                    System.out.println("DEBUG: Пропускаем проверку API для тестирования смены почты");
-                    
-                    // Обновляем email в SessionManager
-                    sessionManager.updateEmail(newEmail);
-                    
-                    // Показываем сообщение об успехе
-                    String title = "Почта успешно изменена";
-                    Intent intent = new Intent(ChangeEmail.this, ChangeSuccess.class);
-                    intent.putExtra("TITLE", title);
-                    startActivity(intent);
-                    finish();
-                    
-                    // В реальном приложении, вместо этого нужно показывать ошибку:
-                    // Toast.makeText(this, "Ошибка сети. Пожалуйста, попробуйте позже", Toast.LENGTH_SHORT).show();
+                    // Обработка ошибки
+                    Toast.makeText(this, "Ошибка при обновлении email", Toast.LENGTH_SHORT).show();
                 }) {
             @Override
             public Map<String, String> getHeaders() {
@@ -168,14 +162,13 @@ public class ChangeEmail extends AppCompatActivity {
             }
         };
         
-        // Настройка таймаута запроса
         request.setRetryPolicy(new DefaultRetryPolicy(
-                30000, // 30 секунд таймаут
+                30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         ));
         
-        // Отправка запроса
         Volley.newRequestQueue(this).add(request);
     }
+    */
 }

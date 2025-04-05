@@ -1,10 +1,7 @@
 package com.example.dartmobileapp.auth;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,9 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VerifyPassword extends AppCompatActivity {
-    
     private EditText passwordInput;
-    private Button nextButton;
     private SessionManager sessionManager;
     private static final String API_URL = "https://dart-server-back.up.railway.app/api";
 
@@ -48,25 +43,27 @@ public class VerifyPassword extends AppCompatActivity {
             return insets;
         });
 
-        // Инициализация компонентов
-        passwordInput = findViewById(R.id.password_input);
-        nextButton = findViewById(R.id.nextButton);
+        // Инициализация SessionManager
         sessionManager = new SessionManager(this);
         
-        // Получаем информацию, откуда пришли
+        // Инициализация поля ввода пароля
+        passwordInput = findViewById(R.id.password_input);
+
+        // Получение информации о том, откуда был выполнен переход
         String from = getIntent().getStringExtra("COMING_FROM");
 
-        // Обработка нажатия кнопки "Далее"
-        nextButton.setOnClickListener(v -> {
+        // Установка обработчика нажатия на кнопку "Дальше"
+        findViewById(R.id.nextButton).setOnClickListener(v -> {
+            // Получаем введенный пароль
             String password = passwordInput.getText().toString().trim();
             
-            // Проверка ввода
-            if (TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Введите пароль", Toast.LENGTH_SHORT).show();
+            // Проверка на пустой пароль
+            if (password.isEmpty()) {
+                Toast.makeText(this, "Пожалуйста, введите пароль", Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            // Верификация пароля через API
+            // Проверяем пароль
             verifyPassword(password, from);
         });
 
@@ -77,100 +74,84 @@ public class VerifyPassword extends AppCompatActivity {
         });
     }
     
-    private void verifyPassword(String password, String redirectTo) {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Проверка пароля...");
-        progressDialog.show();
+    private void verifyPassword(String password, String destination) {
+        // Проверяем пароль сначала локально, если он сохранен в SessionManager
+        String savedPassword = sessionManager.getSharedPreferences().getString("password", null);
         
-        // Получаем email из SessionManager
-        String email = sessionManager.getEmail();
-        if (email == null || email.isEmpty()) {
-            progressDialog.dismiss();
-            Toast.makeText(this, "Ошибка: email не найден", Toast.LENGTH_SHORT).show();
+        if (savedPassword != null && savedPassword.equals(password)) {
+            // Если пароль совпадает с локально сохраненным, сразу переходим к нужному экрану
+            navigateToDestination(destination);
             return;
         }
         
-        // Создаем JSON для запроса
-        JSONObject requestBody = new JSONObject();
+        // Если локальный пароль не совпал или его нет, проверяем через API
+        // Получаем текущий email пользователя из SessionManager
+        String email = sessionManager.getEmail();
+        
+        // Если email не найден, выводим сообщение об ошибке
+        if (email == null) {
+            Toast.makeText(this, "Ошибка: Email не найден", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Создаем JSON объект для отправки на сервер
+        JSONObject jsonBody = new JSONObject();
         try {
-            requestBody.put("email", email);
-            requestBody.put("password", password);
+            jsonBody.put("email", email);
+            jsonBody.put("password", password);
         } catch (JSONException e) {
-            progressDialog.dismiss();
+            e.printStackTrace();
             Toast.makeText(this, "Ошибка при формировании запроса", Toast.LENGTH_SHORT).show();
             return;
         }
         
-        // Создаем запрос к API
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
-                API_URL + "/user/verify",
-                requestBody,
+        // Создание запроса на проверку пароля
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                API_URL + "/user/login", // Используем тот же эндпоинт, что и для входа
+                jsonBody,
                 response -> {
-                    progressDialog.dismiss();
-                    try {
-                        boolean success = response.getBoolean("success");
-                        if (success) {
-                            // Пароль верный, переходим дальше
-                            navigateNext(redirectTo);
-                        } else {
-                            Toast.makeText(this, "Неверный пароль", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(this, "Ошибка при обработке ответа", Toast.LENGTH_SHORT).show();
-                    }
+                    // Если получили ответ, значит пароль верный
+                    // Сохраняем пароль локально, чтобы не делать лишних запросов в будущем
+                    sessionManager.updatePassword(password);
+                    
+                    // Переходим к нужному экрану
+                    navigateToDestination(destination);
                 },
                 error -> {
-                    progressDialog.dismiss();
-                    
-                    // Для упрощения тестирования, пока пропускаем проверку
-                    // и сразу переходим на следующий экран
-                    System.out.println("DEBUG: Пропускаем проверку пароля для тестирования");
-                    navigateNext(redirectTo);
-                    
-                    // В реальном приложении, вместо этого нужно показывать ошибку:
-                    // Toast.makeText(this, "Ошибка сети. Пожалуйста, попробуйте позже", Toast.LENGTH_SHORT).show();
+                    // Если произошла ошибка, значит пароль неверный
+                    Toast.makeText(this, "Неверный пароль", Toast.LENGTH_SHORT).show();
                 }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
-                
-                // Добавляем токен авторизации, если есть
-                String token = sessionManager.getToken();
-                if (token != null && !token.isEmpty()) {
-                    headers.put("Authorization", "Bearer " + token);
-                }
-                
                 return headers;
             }
         };
         
-        // Настройка таймаута запроса
+        // Устанавливаем политику повторных попыток
         request.setRetryPolicy(new DefaultRetryPolicy(
-                30000, // 30 секунд таймаут
+                30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         ));
         
-        // Отправка запроса
+        // Отправляем запрос
         Volley.newRequestQueue(this).add(request);
     }
     
-    private void navigateNext(String redirectTo) {
+    private void navigateToDestination(String destination) {
         Intent intent;
         
-        if ("ChangeEmail".equals(redirectTo)) {
+        if ("ChangeEmail".equals(destination)) {
             intent = new Intent(VerifyPassword.this, ChangeEmail.class);
-        } else if ("ChangeUsername".equals(redirectTo)) {
+        } else if ("ChangeUsername".equals(destination)) {
             intent = new Intent(VerifyPassword.this, ChangeUsername.class);
         } else {
-            // Если неизвестный редирект, возвращаемся в профиль
+            // По умолчанию возвращаемся к профилю
             intent = new Intent(VerifyPassword.this, UserProfile.class);
-            Toast.makeText(this, "Неизвестный тип операции", Toast.LENGTH_SHORT).show();
         }
         
         startActivity(intent);
-        finish(); // Закрываем текущую активность
     }
 }
