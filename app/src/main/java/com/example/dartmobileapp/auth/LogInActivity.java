@@ -113,16 +113,25 @@ public class LogInActivity extends AppCompatActivity {
                 jsonBody,
                 response -> {
                     try {
+                        // Log the entire response for debugging
+                        Log.d("LoginDebug", "Response: " + response.toString());
+                        
+                        // Extract token from response
                         String token = response.getString("token");
-                        String userId = response.getString("userId");
-                        String username = response.getString("username");
-                        String email = response.getString("email");
+                        
+                        // For userId, use a placeholder or extract from JWT token
+                        // For username and email, use what the user entered
+                        String userId = "user_" + System.currentTimeMillis(); // Temporary ID
+                        String name = username.split("@")[0]; // Use part of email as username
+                        String email = username; // Use the input email
                         
                         SessionManager sessionManager = new SessionManager(LogInActivity.this);
-                        sessionManager.createSession(token, userId, username, email);
+                        sessionManager.createSession(token, userId, name, email);
                         
                         navigateToFeed();
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("LoginDebug", "JSON Error: " + e.getMessage());
                         showToast("Ошибка при обработке ответа сервера");
                     }
                 },

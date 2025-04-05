@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Red, Black, and White Color Palette -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="red">#FF0000</color>
+
+    <!-- Light Red (for accents or highlights) -->
+    <color name="red_light">#FF6666</color> <!-- Lighter red shade -->
+
+    <!-- Dark Red (for deep accents or borders) -->
+    <color name="red_dark">#990000</color> <!-- Darker red shade -->
+
+    <!-- Background colors -->
+    <color name="background_primary">#FFFFFF</color> <!-- White background -->
+    <color name="background_secondary">#000000</color> <!-- Black background -->
+
+    <!-- Additional colors that were missing from the styles -->
+    <color name="primary">#FF0000</color> <!-- Red for primary color -->
+    <color name="text_primary">#000000</color> <!-- Black for primary text -->
+    <color name="text_secondary">#757575</color> <!-- Dark Gray for secondary text -->
+    <color name="surface">#FFFFFF</color> <!-- White for surface background -->
+
 </resources>
