@@ -38,16 +38,7 @@
                 android:layout_weight="1" />
 
             <!-- Иконка поиска -->
-            <ImageButton
-                android:id="@+id/search_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="8dp"
-                android:scaleType="centerInside"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_search"
-                android:contentDescription="Поиск"
-                />
+
 
             <!-- Иконка профиля -->
             <ImageButton
