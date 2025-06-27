@@ -39,7 +39,7 @@ import com.example.dartmobileapp.utils.SessionManager;
 public class LogInActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, passwordEditText;
     private MaterialButton loginButton;
-    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back-2.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

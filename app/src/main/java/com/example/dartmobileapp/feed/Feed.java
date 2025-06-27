@@ -34,7 +34,7 @@ public class Feed extends AppCompatActivity {
     private VideoAdapter adapter;
     private List<Video> videoList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
-    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back-2.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

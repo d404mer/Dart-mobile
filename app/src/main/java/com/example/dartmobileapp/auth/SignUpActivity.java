@@ -44,7 +44,7 @@ import com.android.volley.DefaultRetryPolicy;
 public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, emailEditText, passwordEditText, passwordConfirmEditText;
     private Button signUpButton;
-    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back-2.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

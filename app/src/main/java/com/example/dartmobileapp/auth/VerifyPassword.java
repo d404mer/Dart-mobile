@@ -30,7 +30,7 @@ import java.util.Map;
 public class VerifyPassword extends AppCompatActivity {
     private EditText passwordInput;
     private SessionManager sessionManager;
-    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back-2.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
