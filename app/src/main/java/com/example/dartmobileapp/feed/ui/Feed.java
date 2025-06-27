@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.dartmobileapp.R;
 import com.example.dartmobileapp.common.network.ApiClient;
 import com.example.dartmobileapp.feed.adapter.VideoAdapter;
-import com.example.dartmobileapp.model.video.Video;
+import com.example.dartmobileapp.model.Video;
 import com.example.dartmobileapp.profile.main.UserProfile;
 
 import org.json.JSONArray;

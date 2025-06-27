@@ -28,6 +28,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.dartmobileapp.R;
 import com.example.dartmobileapp.feed.Feed;
+import com.example.dartmobileapp.utils.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
@@ -37,11 +38,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.example.dartmobileapp.ui.main.MainFrame;
+import android.util.Log;
+import com.android.volley.DefaultRetryPolicy;
 
 public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText usernameEditText, emailEditText, passwordEditText, passwordConfirmEditText;
     private Button signUpButton;
-    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back-2.up.railway.app/api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +135,13 @@ public class SignUpActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     try {
                         String token = response.getString("token");
-                        saveToken(token);
-                        navigateToFeed();
+                        
+                        // For debugging
+                        Log.d("SignupDebug", "Response: " + response.toString());
+                        System.out.println("SIGNUP DEBUG - Response: " + response.toString());
+                        
+                        // Now that we have the token, let's fetch user data
+                        fetchUserProfile(token, username, email);
                     } catch (JSONException e) {
                         showToast("Ошибка при обработке ответа сервера");
                     }
@@ -151,6 +159,92 @@ public class SignUpActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(request);
+    }
+    
+    private void fetchUserProfile(String token, String inputName, String inputEmail) {
+        // Запрос на получение данных пользователя
+        JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET,
+                API_URL + "/user/profile",
+                null,
+                profileResponse -> {
+                    try {
+                        // Log the entire profile response for debugging
+                        Log.d("SignupDebug", "Profile Response: " + profileResponse.toString());
+                        System.out.println("SIGNUP DEBUG - Profile Response: " + profileResponse.toString());
+                        
+                        String userId = "user_" + System.currentTimeMillis(); // Placeholder ID
+                        
+                        // Extract user info
+                        String name;
+                        String email = inputEmail;
+                        
+                        // Try to get the name directly from the response
+                        if (profileResponse.has("name")) {
+                            name = profileResponse.getString("name");
+                            Log.d("SignupDebug", "Name found in profile: " + name);
+                            System.out.println("SIGNUP DEBUG - Name found in profile: " + name);
+                        } else if (profileResponse.has("user") && profileResponse.getJSONObject("user").has("name")) {
+                            name = profileResponse.getJSONObject("user").getString("name");
+                            Log.d("SignupDebug", "Name found in user object: " + name);
+                            System.out.println("SIGNUP DEBUG - Name found in user object: " + name);
+                        } else {
+                            // Default fallback - use the input name provided during registration
+                            name = inputName;
+                            Log.d("SignupDebug", "No name found in profile, using input name: " + name);
+                            System.out.println("SIGNUP DEBUG - No name found in profile, using input name: " + name);
+                        }
+                        
+                        // Try to get the email
+                        if (profileResponse.has("email")) {
+                            email = profileResponse.getString("email");
+                        } else if (profileResponse.has("user") && profileResponse.getJSONObject("user").has("email")) {
+                            email = profileResponse.getJSONObject("user").getString("email");
+                        }
+                        
+                        Log.d("SignupDebug", "Final values - Name: " + name + ", Email: " + email);
+                        System.out.println("SIGNUP DEBUG - Final values - Name: " + name + ", Email: " + email);
+                        
+                        // Create session
+                        SessionManager sessionManager = new SessionManager(SignUpActivity.this);
+                        sessionManager.createSession(token, userId, name, email);
+                        
+                        navigateToFeed();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("SignupDebug", "Error parsing profile: " + e.getMessage());
+                        createSessionWithInput(token, inputName, inputEmail);
+                    }
+                },
+                error -> {
+                    Log.e("SignupDebug", "Error fetching profile: " + error.toString());
+                    // If we can't get the profile, create session with input values
+                    createSessionWithInput(token, inputName, inputEmail);
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
+        
+        profileRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
+        
+        Volley.newRequestQueue(this).add(profileRequest);
+    }
+    
+    private void createSessionWithInput(String token, String name, String email) {
+        String userId = "user_" + System.currentTimeMillis();
+        
+        SessionManager sessionManager = new SessionManager(SignUpActivity.this);
+        sessionManager.createSession(token, userId, name, email);
+        
+        navigateToFeed();
     }
 
     private void saveToken(String token) {

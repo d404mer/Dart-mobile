@@ -16,7 +16,7 @@ public class ApiClient {
     private static ApiClient instance;
     private RequestQueue requestQueue;
     private static Context context;
-    private static final String BASE_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String BASE_URL = "https://dart-server-back-2.up.railway.app/";
 
     private ApiClient(Context context) {
         ApiClient.context = context;

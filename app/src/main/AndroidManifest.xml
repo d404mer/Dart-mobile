@@ -16,7 +16,9 @@
         android:theme="@style/Theme.DartMobileApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-       
+        <activity
+            android:name=".activityVideoDetail"
+            android:exported="false" />
         <activity
             android:name=".profile.edit.ChangePassword"
             android:exported="false" />
@@ -56,16 +58,15 @@
         <activity
             android:name=".ui.main.MainFrame"
             android:exported="true" />
-
         <activity
             android:name=".start"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
