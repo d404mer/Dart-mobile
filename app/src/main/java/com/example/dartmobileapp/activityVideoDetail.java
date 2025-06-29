@@ -49,7 +49,8 @@ public class activityVideoDetail extends AppCompatActivity {
     private RecyclerView relatedVideosRecyclerView;
     private VideoAdapter relatedVideosAdapter;
     private List<Video> relatedVideosList = new ArrayList<>();
-    private static final String API_URL = "https://dart-server-back.up.railway.app/api";
+    private static final String API_URL = "https://dart-server-back-2.up.railway.app/api";
+
 
     private Video currentVideo;
     private boolean isDescriptionExpanded = false;
